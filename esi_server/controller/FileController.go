@@ -128,14 +128,14 @@ func ExportSchRank(c *gin.Context) {
 func ExportSubject(c *gin.Context) {
 	db := common.GetDB()
 	// 获取学科名称、学科类别
-	subName := c.DefaultQuery("subName", "")
+	creatureName := c.DefaultQuery("creatureName", "")
 	subType := c.DefaultQuery("subType", "")
 	var query []string
 	var args []string
 	// 若学科名称存在
-	if subName != "" {
-		query = append(query, "sub_name LIKE ?")
-		args = append(args, "%"+subName+"%")
+	if creatureName != "" {
+		query = append(query, "creature_name LIKE ?")
+		args = append(args, "%"+creatureName+"%")
 	}
 	// 若学科类别存在
 	if subType != "null" {
@@ -168,7 +168,7 @@ func ExportSubject(c *gin.Context) {
 		curIndex := i + 2
 		strIndex := strconv.Itoa(curIndex)
 		xlsx.SetCellValue("Sheet1", "A"+strIndex, v.ID)
-		xlsx.SetCellValue("Sheet1", "B"+strIndex, v.SubName)
+		xlsx.SetCellValue("Sheet1", "B"+strIndex, v.CreatureName)
 		xlsx.SetCellValue("Sheet1", "C"+strIndex, v.SubType)
 	}
 	// 返回文件流
@@ -183,7 +183,7 @@ func ExportSubRank(c *gin.Context) {
 	// 获取年份、大学名称、学科名称
 	year := c.DefaultQuery("year", "null")
 	schName := c.DefaultQuery("schName", "")
-	subName := c.DefaultQuery("subName", "")
+	creatureName := c.DefaultQuery("creatureName", "")
 	var query []string
 	var args []string
 	// 若年份存在
@@ -197,9 +197,9 @@ func ExportSubRank(c *gin.Context) {
 		args = append(args, "%"+schName+"%")
 	}
 	// 若学科名称存在
-	if subName != "" {
-		query = append(query, "sub_name LIKE ?")
-		args = append(args, "%"+subName+"%")
+	if creatureName != "" {
+		query = append(query, "creature_name LIKE ?")
+		args = append(args, "%"+creatureName+"%")
 	}
 	// 拼接字符串
 	var querystr string
@@ -233,7 +233,7 @@ func ExportSubRank(c *gin.Context) {
 		xlsx.SetCellValue("Sheet1", "A"+strIndex, v.ID)
 		xlsx.SetCellValue("Sheet1", "B"+strIndex, v.Year)
 		xlsx.SetCellValue("Sheet1", "C"+strIndex, v.SchName)
-		xlsx.SetCellValue("Sheet1", "D"+strIndex, v.SubName)
+		xlsx.SetCellValue("Sheet1", "D"+strIndex, v.CreatureName)
 		xlsx.SetCellValue("Sheet1", "E"+strIndex, v.SubCountRank)
 		xlsx.SetCellValue("Sheet1", "F"+strIndex, v.SubWorldRank)
 	}
@@ -249,7 +249,7 @@ func ExportPaper(c *gin.Context) {
 	// 获取年份、大学名称、学科名称
 	year := c.DefaultQuery("year", "null")
 	schName := c.DefaultQuery("schName", "")
-	subName := c.DefaultQuery("subName", "")
+	creatureName := c.DefaultQuery("creatureName", "")
 	var query []string
 	var args []string
 	// 若年份存在
@@ -263,9 +263,9 @@ func ExportPaper(c *gin.Context) {
 		args = append(args, "%"+schName+"%")
 	}
 	// 若学科名称存在
-	if subName != "" {
-		query = append(query, "sub_name LIKE ?")
-		args = append(args, "%"+subName+"%")
+	if creatureName != "" {
+		query = append(query, "creature_name LIKE ?")
+		args = append(args, "%"+creatureName+"%")
 	}
 	// 拼接字符串
 	var querystr string
@@ -299,7 +299,7 @@ func ExportPaper(c *gin.Context) {
 		xlsx.SetCellValue("Sheet1", "A"+strIndex, v.ID)
 		xlsx.SetCellValue("Sheet1", "B"+strIndex, v.Year)
 		xlsx.SetCellValue("Sheet1", "C"+strIndex, v.SchName)
-		xlsx.SetCellValue("Sheet1", "D"+strIndex, v.SubName)
+		xlsx.SetCellValue("Sheet1", "D"+strIndex, v.CreatureName)
 		xlsx.SetCellValue("Sheet1", "E"+strIndex, v.PaperNum)
 		xlsx.SetCellValue("Sheet1", "F"+strIndex, v.UsedNum)
 	}

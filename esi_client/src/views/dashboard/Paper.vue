@@ -9,8 +9,8 @@
                     <n-form-item path="schName" label="大学名称">
                         <n-select v-model:value="addPaper.schName" filterable :options="schoolOptions" clearable placeholder="请输入大学名称" style="width: 500px;" />
                     </n-form-item>
-                    <n-form-item path="subName" label="学科名称">
-                        <n-select v-model:value="addPaper.subName" filterable :options="subjectOptions" clearable placeholder="请输入学科名称" style="width: 500px;" />
+                    <n-form-item path="creatureName" label="学科名称">
+                        <n-select v-model:value="addPaper.creatureName" filterable :options="subjectOptions" clearable placeholder="请输入学科名称" style="width: 500px;" />
                     </n-form-item>
                     <n-form-item path="paperNum" label="论文数">
                         <n-input v-model:value="addPaper.paperNum" clearable placeholder="请输入论文数" style="width: 500px;" />
@@ -34,7 +34,7 @@
                 <div style="display: flex; margin-top: 10px;">
                     <n-input-number v-model:value="pageInfo.year" clearable  placeholder="请输入年份" style="width: 500px;" />
                     <n-input v-model:value="pageInfo.schName" placeholder="请输入大学名称关键字" clearable style="margin-left: 20px;" />
-                    <n-input v-model:value="pageInfo.subName" placeholder="请输入学科名称关键字" clearable style="margin-left: 20px;" />
+                    <n-input v-model:value="pageInfo.creatureName" placeholder="请输入学科名称关键字" clearable style="margin-left: 20px;" />
                     <n-button @click="search" type="success" style="margin-left: 20px;">
                         <template #icon><n-icon><SearchOutline /></n-icon></template>
                             查询&#8194;
@@ -58,7 +58,7 @@
                             <td>{{paper.ID}}</td>
                             <td>{{paper.Year}}</td>
                             <td>{{paper.SchName}}</td>
-                            <td>{{paper.SubName}}</td>
+                            <td>{{paper.CreatureName}}</td>
                             <td>{{paper.PaperNum}}</td>
                             <td>{{paper.UsedNum}}</td>
                             <td>             
@@ -97,7 +97,7 @@
                                     <n-input v-model:value="updatePaper.schName" :disabled="!active" />
                                 </n-form-item>
                                 <n-form-item label="学科名称" >
-                                    <n-input v-model:value="updatePaper.subName" :disabled="!active" />
+                                    <n-input v-model:value="updatePaper.creatureName" :disabled="!active" />
                                 </n-form-item>
                                 <n-form-item path="paperNum" label="论文数">
                                     <n-input v-model:value="updatePaper.paperNum" clearable placeholder="请输入论文数" />
@@ -135,7 +135,7 @@ const showUpdateModel = ref(false)
 const addPaper = reactive({
     year : 2022,
     schName: null,
-    subName: null,
+    creatureName: null,
     paperNum: "",
     usedNum: ""
 })
@@ -143,7 +143,7 @@ const updatePaper = reactive({
     id: 0,
     year : null,
     schName: "",
-    subName: "",
+    creatureName: "",
     paperNum: "",
     usedNum: ""
 })
@@ -155,7 +155,7 @@ const pageInfo = reactive({
     count:0,
     year:null,
     schName: "",
-    subName: ""
+    creatureName: ""
 })
 const schoolOptions = ref([])
 const subjectOptions = ref([])
@@ -182,8 +182,8 @@ const loadSubjectList = async() => {
     console.log(res)
     subjectOptions.value = res.data.data.subject.map((item)=>{
         return {
-            label: item.SubName,
-            value: item.SubName,
+            label: item.CreatureName,
+            value: item.CreatureName,
         }
     })
 }
@@ -192,7 +192,7 @@ const loadPaper = async(pageNum = 0) => {
     if (pageNum != 0){
         pageInfo.pageNum = pageNum;
     }
-    let res = await axios.post(`/paper/search?year=${pageInfo.year}&schName=${pageInfo.schName}&subName=${pageInfo.subName}&pageNum=${pageInfo.pageNum}&pageSize=${pageInfo.pageSize}`)
+    let res = await axios.post(`/paper/search?year=${pageInfo.year}&schName=${pageInfo.schName}&creatureName=${pageInfo.creatureName}&pageNum=${pageInfo.pageNum}&pageSize=${pageInfo.pageSize}`)
     console.log(res)
     if (res.data.code == 200) {
         paperList.value = res.data.data.paper
@@ -219,7 +219,7 @@ let rules = {
     schName: [
         { required: true, message: "请输入大学名称" },
     ],
-    subName: [
+    creatureName: [
         { required: true, message: "请输入学科名称"},
     ],
     paperNum: [
@@ -247,7 +247,7 @@ const create = async() => {
     let res = await axios.post("/paper", {
         year: addPaper.year,
         schName: addPaper.schName,
-        subName: addPaper.subName,
+        creatureName: addPaper.creatureName,
         paperNum: Number(addPaper.paperNum),
         usedNum: Number(addPaper.usedNum)
     })
@@ -265,7 +265,7 @@ const toUpdate = async(paper) => {
     showUpdateModel.value = true
     updatePaper.id = paper.ID
     updatePaper.year = paper.Year
-    updatePaper.subName = paper.SubName
+    updatePaper.creatureName = paper.CreatureName
     updatePaper.schName = paper.SchName
     updatePaper.paperNum = paper.PaperNum
     updatePaper.usedNum = paper.UsedNum
@@ -311,7 +311,7 @@ const closeModal = () => {
 
 const refresh = () => {
     addPaper.year = 2022
-    addPaper.subName = null
+    addPaper.creatureName = null
     addPaper.schName = null
     addPaper.paperNum = ""
     addPaper.usedNum = ""
@@ -325,12 +325,12 @@ const search = () => {
 const clean = () => {
     pageInfo.year = null
     pageInfo.schName = ""
-    pageInfo.subName = ""
+    pageInfo.creatureName = ""
     loadPaper()
 }
 
 const exportExcel = async() => {
-    let res = await axios.get(`/exportPaper?year=${pageInfo.year}&schName=${pageInfo.schName}&subName=${pageInfo.subName}`, {responseType: "blob"})
+    let res = await axios.get(`/exportPaper?year=${pageInfo.year}&schName=${pageInfo.schName}&creatureName=${pageInfo.creatureName}`, {responseType: "blob"})
     console.log(res)
     fileDownload(res.data, "result.xlsx")
 }

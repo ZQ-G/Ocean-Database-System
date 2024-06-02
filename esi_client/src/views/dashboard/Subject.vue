@@ -3,8 +3,8 @@
         <n-tabs type="line" animated>
             <n-tab-pane name="add" tab="学科信息添加">
                 <n-form ref="formRef" :rules="rules" :model="addSubject" style="margin-top:10px;">
-                    <n-form-item path="subName" label="学科名称">
-                        <n-input v-model:value="addSubject.subName" placeholder="请输入学科名称" clearable style="width: 500px;" />
+                    <n-form-item path="creatureName" label="学科名称">
+                        <n-input v-model:value="addSubject.creatureName" placeholder="请输入学科名称" clearable style="width: 500px;" />
                     </n-form-item>
                     <n-form-item label="学科类别">
                         <n-select v-model:value="addSubject.subType" :options="options" style="width: 500px;" />
@@ -23,7 +23,7 @@
             </n-tab-pane>
             <n-tab-pane name="maintain" tab="学科信息维护">
                 <div style="display: flex; margin-top: 10px;">                  
-                    <n-input v-model:value="pageInfo.subName" placeholder="请输入学科名称关键字" clearable />
+                    <n-input v-model:value="pageInfo.creatureName" placeholder="请输入学科名称关键字" clearable />
                     <n-select v-model:value="pageInfo.subType" :options="options" style="width: 300px; margin-left: 20px;" placeholder="请选择学科类别" filterable />
                     <n-button @click="search" type="success" style="margin-left: 20px;">
                         <template #icon><n-icon><SearchOutline /></n-icon></template>
@@ -43,7 +43,7 @@
                             <tbody>
                                 <tr v-for="(subject,index) in subjectList">
                                 <td>{{subject.ID}}</td>
-                                <td>{{subject.SubName}}</td>
+                                <td>{{subject.CreatureName}}</td>
                                 <td>{{subject.SubType}}</td>
                                 <td>             
                                     <n-button @click="updateValue(subject)">
@@ -77,8 +77,8 @@
                                 <n-form-item label="学科编号" style="margin-top: 20px;">
                                     <n-input v-model:value="updateSubject.id" :disabled="!active" />
                                 </n-form-item>
-                                <n-form-item path="subName" label="学科名称">
-                                    <n-input v-model:value="updateSubject.subName" placeholder="请输入大学名称" clearable />
+                                <n-form-item path="creatureName" label="学科名称">
+                                    <n-input v-model:value="updateSubject.creatureName" placeholder="请输入大学名称" clearable />
                                 </n-form-item>
                                 <n-form-item label="学科类别">
                                     <n-select v-model:value="updateSubject.subType" :options="options" />
@@ -111,12 +111,12 @@ const fileDownload = inject("fileDownload")
 const formRef = ref(null)
 const showUpdateModel = ref(false)
 const addSubject = reactive({
-    subName: "",
+    creatureName: "",
     subType: "哲学"
 })
 const updateSubject = reactive({
     id: 0,
-    subName: "",
+    creatureName: "",
     subType: ""
 })
 const subjectList = ref([])
@@ -125,7 +125,7 @@ const pageInfo = reactive({
     pageSize:7,
     pageCount:0,
     count:0,
-    subName:"",
+    creatureName:"",
     subType:null
 })
 
@@ -137,7 +137,7 @@ const loadSubject = async(pageNum = 0) => {
     if (pageNum != 0){
         pageInfo.pageNum = pageNum;
     }
-    let res = await axios.post(`/subject/search?subName=${pageInfo.subName}&subType=${pageInfo.subType}&pageNum=${pageInfo.pageNum}&pageSize=${pageInfo.pageSize}`)
+    let res = await axios.post(`/subject/search?creatureName=${pageInfo.creatureName}&subType=${pageInfo.subType}&pageNum=${pageInfo.pageNum}&pageSize=${pageInfo.pageSize}`)
     console.log(res)
     if (res.data.code == 200) {
         subjectList.value = res.data.data.subject
@@ -147,7 +147,7 @@ const loadSubject = async(pageNum = 0) => {
 }
 
 let rules = {
-    subName: [
+    creatureName: [
         { required: true, message: "请输入学科名称" },
         { max: 20, message: "学科名称长度在小于 20 个字符" },    
     ]
@@ -181,7 +181,7 @@ const toCreate = async() => {
 
 const create = async() => {
     let res = await axios.post("/subject", {
-        subName: addSubject.subName,
+        creatureName: addSubject.creatureName,
         subType: addSubject.subType,
     })
     console.log(res)
@@ -197,7 +197,7 @@ const create = async() => {
 const updateValue = async(subject) => {
     showUpdateModel.value = true
     updateSubject.id = subject.ID
-    updateSubject.subName = subject.SubName
+    updateSubject.creatureName = subject.CreatureName
     updateSubject.subType = subject.SubType
 }
 
@@ -214,7 +214,7 @@ const toUpdate = async() => {
 
 const update = async() => {
     let res = await axios.put("/subject/"+ updateSubject.id, {
-        subName: updateSubject.subName,
+        creatureName: updateSubject.creatureName,
         subType: updateSubject.subType,
     })
     console.log(res)
@@ -251,7 +251,7 @@ const closeModal = () => {
 }
 
 const refresh = () => {
-    addSubject.subName = ""
+    addSubject.creatureName = ""
     addSubject.subType = "哲学"
 }
 
@@ -261,13 +261,13 @@ const search = () => {
 }
 
 const clean = () => {
-    pageInfo.subName = ""
+    pageInfo.creatureName = ""
     pageInfo.subType = null
     loadSubject()
 }
 
 const exportExcel = async() => {
-    let res = await axios.get(`/exportSubject?subName=${pageInfo.subName}&subType=${pageInfo.subType}`, {responseType: "blob"})
+    let res = await axios.get(`/exportSubject?creatureName=${pageInfo.creatureName}&subType=${pageInfo.subType}`, {responseType: "blob"})
     console.log(res)
     fileDownload(res.data, "result.xlsx")
 }

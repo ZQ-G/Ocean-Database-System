@@ -30,7 +30,7 @@ func (p PaperController) Create(c *gin.Context) {
 	}
 	// 判断论文数据是否重复添加
 	var existPaper model.Paper
-	p.DB.Where("year = ? AND sch_name = ? AND sub_name = ?", paperRequest.Year, paperRequest.SchName, paperRequest.SubName).First(&existPaper)
+	p.DB.Where("year = ? AND sch_name = ? AND creature_name = ?", paperRequest.Year, paperRequest.SchName, paperRequest.CreatureName).First(&existPaper)
 	if existPaper.ID != 0 {
 		response.Fail(c, nil, "论文数据已存在")
 		return
@@ -39,7 +39,7 @@ func (p PaperController) Create(c *gin.Context) {
 	paper := model.Paper{
 		Year:     paperRequest.Year,
 		SchName:  paperRequest.SchName,
-		SubName:  paperRequest.SubName,
+		CreatureName:  paperRequest.CreatureName,
 		PaperNum: paperRequest.PaperNum,
 		UsedNum:  paperRequest.UsedNum,
 	}
@@ -94,7 +94,7 @@ func (p PaperController) Search(c *gin.Context) {
 	// 获取年份、大学名称、学科名称、分页参数
 	year := c.DefaultQuery("year", "null")
 	schName := c.DefaultQuery("schName", "")
-	subName := c.DefaultQuery("subName", "")
+	creatureName := c.DefaultQuery("creatureName", "")
 	pageNum, _ := strconv.Atoi(c.DefaultQuery("pageNum", "1"))
 	pageSize, _ := strconv.Atoi(c.DefaultQuery("pageSize", "8"))
 	var query []string
@@ -110,9 +110,9 @@ func (p PaperController) Search(c *gin.Context) {
 		args = append(args, "%"+schName+"%")
 	}
 	// 若学科名称存在
-	if subName != "" {
-		query = append(query, "sub_name LIKE ?")
-		args = append(args, "%"+subName+"%")
+	if creatureName != "" {
+		query = append(query, "creature_name LIKE ?")
+		args = append(args, "%"+creatureName+"%")
 	}
 	// 拼接字符串
 	var querystr string

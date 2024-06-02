@@ -31,7 +31,7 @@ func (s SubjectController) Create(c *gin.Context) {
 	}
 	// 添加学科信息
 	subject := model.Subject{
-		SubName: subjectRequest.SubName,
+		CreatureName: subjectRequest.CreatureName,
 		SubType: subjectRequest.SubType,
 	}
 	if err := s.DB.Create(&subject).Error; err != nil {
@@ -84,7 +84,7 @@ func (s SubjectController) Delete(c *gin.Context) {
 func (s SubjectController) Search(c *gin.Context) {
 	// 获取学科类别、学科名称、分页参数
 	subType := c.DefaultQuery("subType", "null")
-	subName := c.DefaultQuery("subName", "")
+	creatureName := c.DefaultQuery("creatureName", "")
 	pageNum, _ := strconv.Atoi(c.DefaultQuery("pageNum", "1"))
 	pageSize, _ := strconv.Atoi(c.DefaultQuery("pageSize", "7"))
 	var query []string
@@ -95,9 +95,9 @@ func (s SubjectController) Search(c *gin.Context) {
 		args = append(args, subType)
 	}
 	// 若学科名称存在
-	if subName != "" {
-		query = append(query, "sub_name LIKE ?")
-		args = append(args, "%"+subName+"%")
+	if creatureName != "" {
+		query = append(query, "creature_name LIKE ?")
+		args = append(args, "%"+creatureName+"%")
 	}
 	// 拼接字符串
 	var querystr string
@@ -129,7 +129,7 @@ func (s SubjectController) Search(c *gin.Context) {
 func (s SubjectController) List(c *gin.Context) {
 	// 学科信息
 	var subject []model.Subject
-	s.DB.Table("subjects").Select("id, sub_name").Find(&subject)
+	s.DB.Table("subjects").Select("id, creature_name").Find(&subject)
 	// 展示学科信息
 	response.Success(c, gin.H{"subject": subject}, "查找成功")
 }

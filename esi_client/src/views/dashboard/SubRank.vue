@@ -9,8 +9,8 @@
                     <n-form-item path="schName" label="大学名称">
                         <n-select v-model:value="addSubRank.schName" filterable :options="schoolOptions" clearable placeholder="请输入大学名称" style="width: 500px;" />
                     </n-form-item>
-                    <n-form-item path="subName" label="学科名称">
-                        <n-select v-model:value="addSubRank.subName" filterable :options="subjectOptions" clearable placeholder="请输入学科名称" style="width: 500px;" />
+                    <n-form-item path="creatureName" label="学科名称">
+                        <n-select v-model:value="addSubRank.creatureName" filterable :options="subjectOptions" clearable placeholder="请输入学科名称" style="width: 500px;" />
                     </n-form-item>
                     <n-form-item path="subCountRank" label="学科全国排名">
                         <n-input v-model:value="addSubRank.subCountRank" clearable placeholder="请输入学科全国排名" style="width: 500px;" />
@@ -34,7 +34,7 @@
                 <div style="display: flex; margin-top: 10px;">
                     <n-input-number v-model:value="pageInfo.year" clearable  placeholder="请输入年份" style="width: 500px;" />
                     <n-input v-model:value="pageInfo.schName" placeholder="请输入大学名称关键字" clearable style="margin-left: 20px;" />
-                    <n-input v-model:value="pageInfo.subName" placeholder="请输入学科名称关键字" clearable style="margin-left: 20px;" />
+                    <n-input v-model:value="pageInfo.creatureName" placeholder="请输入学科名称关键字" clearable style="margin-left: 20px;" />
                     <n-button @click="search" type="success" style="margin-left: 20px;">
                         <template #icon><n-icon><SearchOutline /></n-icon></template>
                             查询&#8194;
@@ -58,7 +58,7 @@
                             <td>{{subRank.ID}}</td>
                             <td>{{subRank.Year}}</td>
                             <td>{{subRank.SchName}}</td>
-                            <td>{{subRank.SubName}}</td>
+                            <td>{{subRank.CreatureName}}</td>
                             <td>{{subRank.SubCountRank}}</td>
                             <td>{{subRank.SubWorldRank}}</td>
                             <td>             
@@ -97,7 +97,7 @@
                                     <n-input v-model:value="updateSubRank.schName" :disabled="!active" />
                                 </n-form-item>
                                 <n-form-item label="学科名称" >
-                                    <n-input v-model:value="updateSubRank.subName" :disabled="!active" />
+                                    <n-input v-model:value="updateSubRank.creatureName" :disabled="!active" />
                                 </n-form-item>
                                 <n-form-item path="subCountRank" label="学科全国排名">
                                     <n-input v-model:value="updateSubRank.subCountRank" clearable placeholder="请输入学科全国排名" />
@@ -136,7 +136,7 @@ const showUpdateModel = ref(false)
 const addSubRank = reactive({
     year : 2022,
     schName: null,
-    subName: null,
+    creatureName: null,
     subCountRank: "",
     subWorldRank: ""
 })
@@ -144,7 +144,7 @@ const updateSubRank = reactive({
     id: 0,
     year : null,
     schName: "",
-    subName: "",
+    creatureName: "",
     subCountRank: "",
     subWorldRank: ""
 })
@@ -156,7 +156,7 @@ const pageInfo = reactive({
     count:0,
     year:null,
     schName: "",
-    subName: ""
+    creatureName: ""
 })
 const schoolOptions = ref([])
 const subjectOptions = ref([])
@@ -183,8 +183,8 @@ const loadSubjectList = async() => {
     console.log(res)
     subjectOptions.value = res.data.data.subject.map((item)=>{
         return {
-            label: item.SubName,
-            value: item.SubName,
+            label: item.CreatureName,
+            value: item.CreatureName,
         }
     })
 }
@@ -193,7 +193,7 @@ const loadSubRank = async(pageNum = 0) => {
     if (pageNum != 0){
         pageInfo.pageNum = pageNum;
     }
-    let res = await axios.post(`/subRank/search?year=${pageInfo.year}&schName=${pageInfo.schName}&subName=${pageInfo.subName}&pageNum=${pageInfo.pageNum}&pageSize=${pageInfo.pageSize}`)
+    let res = await axios.post(`/subRank/search?year=${pageInfo.year}&schName=${pageInfo.schName}&creatureName=${pageInfo.creatureName}&pageNum=${pageInfo.pageNum}&pageSize=${pageInfo.pageSize}`)
     console.log(res)
     if (res.data.code == 200) {
         subRankList.value = res.data.data.subRank
@@ -233,7 +233,7 @@ let rules = {
     schName: [
         { required: true, message: "请输入大学名称" },
     ],
-    subName: [
+    creatureName: [
         { required: true, message: "请输入学科名称" },
     ],
     subCountRank: [
@@ -262,7 +262,7 @@ const create = async() => {
     let res = await axios.post("/subRank", {
         year: addSubRank.year,
         schName: addSubRank.schName,
-        subName: addSubRank.subName,
+        creatureName: addSubRank.creatureName,
         subCountRank: Number(addSubRank.subCountRank),
         subWorldRank: Number(addSubRank.subWorldRank)
     })
@@ -280,7 +280,7 @@ const updateValue = async(subRank) => {
     showUpdateModel.value = true
     updateSubRank.id = subRank.ID
     updateSubRank.year = subRank.Year
-    updateSubRank.subName = subRank.SubName
+    updateSubRank.creatureName = subRank.CreatureName
     updateSubRank.schName = subRank.SchName
     updateSubRank.subCountRank = subRank.SubCountRank
     updateSubRank.subWorldRank = subRank.SubWorldRank
@@ -344,7 +344,7 @@ const closeModal = () => {
 
 const refresh = () => {
     addSubRank.year = 2022
-    addSubRank.subName = null
+    addSubRank.creatureName = null
     addSubRank.schName = null
     addSubRank.subCountRank = ""
     addSubRank.subWorldRank = ""
@@ -358,12 +358,12 @@ const search = () => {
 const clean = () => {
     pageInfo.year = null
     pageInfo.schName = ""
-    pageInfo.subName = ""
+    pageInfo.creatureName = ""
     loadSubRank()
 }
 
 const exportExcel = async() => {
-    let res = await axios.get(`/exportSubRank?year=${pageInfo.year}&schName=${pageInfo.schName}&subName=${pageInfo.subName}`, {responseType: "blob"})
+    let res = await axios.get(`/exportSubRank?year=${pageInfo.year}&schName=${pageInfo.schName}&creatureName=${pageInfo.creatureName}`, {responseType: "blob"})
     console.log(res)
     fileDownload(res.data, "result.xlsx")
 }

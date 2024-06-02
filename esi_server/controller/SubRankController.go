@@ -31,7 +31,7 @@ func (sr SubRankController) Create(c *gin.Context) {
 	}
 	// 判断学科排名是否重复添加
 	var existSubRank []model.SubRank
-	sr.DB.Where("(year = ? AND sch_name = ? AND sub_name = ?) OR (year = ? AND sub_Count_Rank = ?) OR (year = ? AND sub_World_Rank = ?)", subRankRequest.Year, subRankRequest.SchName, subRankRequest.SubName, subRankRequest.Year, subRankRequest.SubCountRank, subRankRequest.Year, subRankRequest.SubWorldRank).Find(&existSubRank)
+	sr.DB.Where("(year = ? AND sch_name = ? AND creature_name = ?) OR (year = ? AND sub_Count_Rank = ?) OR (year = ? AND sub_World_Rank = ?)", subRankRequest.Year, subRankRequest.SchName, subRankRequest.CreatureName, subRankRequest.Year, subRankRequest.SubCountRank, subRankRequest.Year, subRankRequest.SubWorldRank).Find(&existSubRank)
 	if len(existSubRank) > 0 {
 		response.Fail(c, nil, "学科排名已存在")
 		return
@@ -40,7 +40,7 @@ func (sr SubRankController) Create(c *gin.Context) {
 	schRank := model.SubRank{
 		Year:         subRankRequest.Year,
 		SchName:      subRankRequest.SchName,
-		SubName:      subRankRequest.SubName,
+		CreatureName:      subRankRequest.CreatureName,
 		SubCountRank: subRankRequest.SubCountRank,
 		SubWorldRank: subRankRequest.SubWorldRank,
 	}
@@ -103,7 +103,7 @@ func (sr SubRankController) Search(c *gin.Context) {
 	// 获取年份、大学名称、学科名称、分页参数
 	year := c.DefaultQuery("year", "null")
 	schName := c.DefaultQuery("schName", "")
-	subName := c.DefaultQuery("subName", "")
+	creatureName := c.DefaultQuery("creatureName", "")
 	pageNum, _ := strconv.Atoi(c.DefaultQuery("pageNum", "1"))
 	pageSize, _ := strconv.Atoi(c.DefaultQuery("pageSize", "7"))
 	var query []string
@@ -119,9 +119,9 @@ func (sr SubRankController) Search(c *gin.Context) {
 		args = append(args, "%"+schName+"%")
 	}
 	// 若学科名称存在
-	if subName != "" {
-		query = append(query, "sub_name LIKE ?")
-		args = append(args, "%"+subName+"%")
+	if creatureName != "" {
+		query = append(query, "creature_name LIKE ?")
+		args = append(args, "%"+creatureName+"%")
 	}
 	// 拼接字符串
 	var querystr string
