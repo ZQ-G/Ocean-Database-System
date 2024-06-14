@@ -1,22 +1,22 @@
 <template>
     <div>
         <n-tabs type="line" animated>
-            <n-tab-pane name="add" tab="论文数据添加">
+            <n-tab-pane name="add" tab="观测数据添加">
                 <n-form ref="formRef" :rules="rules" :model="addPaper" style="margin-top:10px;">
                     <n-form-item path="year" label="年份">
                         <n-input-number v-model:value="addPaper.year" clearable  placeholder="请输入年份" style="width: 500px;" />
                     </n-form-item>
-                    <n-form-item path="schName" label="大学名称">
-                        <n-select v-model:value="addPaper.schName" filterable :options="schoolOptions" clearable placeholder="请输入大学名称" style="width: 500px;" />
+                    <n-form-item path="schName" label="观测站名称">
+                        <n-select v-model:value="addPaper.schName" filterable :options="schoolOptions" clearable placeholder="请输入观测站名称" style="width: 500px;" />
                     </n-form-item>
-                    <n-form-item path="creatureName" label="学科名称">
-                        <n-select v-model:value="addPaper.creatureName" filterable :options="subjectOptions" clearable placeholder="请输入学科名称" style="width: 500px;" />
+                    <n-form-item path="creatureName" label="物种名称">
+                        <n-select v-model:value="addPaper.creatureName" filterable :options="subjectOptions" clearable placeholder="请输入物种名称" style="width: 500px;" />
                     </n-form-item>
-                    <n-form-item path="paperNum" label="论文数">
-                        <n-input v-model:value="addPaper.paperNum" clearable placeholder="请输入论文数" style="width: 500px;" />
+                    <n-form-item path="paperNum" label="观测数">
+                        <n-input v-model:value="addPaper.paperNum" clearable placeholder="请输入观测数" style="width: 500px;" />
                     </n-form-item>
-                    <n-form-item path="usedNum" label="他引数">
-                        <n-input v-model:value="addPaper.usedNum" clearable placeholder="请输入他引数" style="width: 500px;" />
+                    <n-form-item path="usedNum" label="地理位置">
+                        <n-input v-model:value="addPaper.usedNum" clearable placeholder="请输入地理位置" style="width: 250px;" />
                     </n-form-item>
                     <n-form-item label="">
                         <n-button @click="toCreate">
@@ -30,11 +30,11 @@
                     </n-form-item>
                 </n-form>               
             </n-tab-pane>
-            <n-tab-pane name="maintain" tab="论文数据维护">
+            <n-tab-pane name="maintain" tab="观测数据维护">
                 <div style="display: flex; margin-top: 10px;">
                     <n-input-number v-model:value="pageInfo.year" clearable  placeholder="请输入年份" style="width: 500px;" />
-                    <n-input v-model:value="pageInfo.schName" placeholder="请输入大学名称关键字" clearable style="margin-left: 20px;" />
-                    <n-input v-model:value="pageInfo.creatureName" placeholder="请输入学科名称关键字" clearable style="margin-left: 20px;" />
+                    <n-input v-model:value="pageInfo.schName" placeholder="请输入观测站名称关键字" clearable style="margin-left: 20px;" />
+                    <n-input v-model:value="pageInfo.creatureName" placeholder="请输入物种名称关键字" clearable style="margin-left: 20px;" />
                     <n-button @click="search" type="success" style="margin-left: 20px;">
                         <template #icon><n-icon><SearchOutline /></n-icon></template>
                             查询&#8194;
@@ -46,10 +46,10 @@
                             <tr>
                             <th>编号</th>
                             <th>年份</th>
-                            <th>大学名称</th>
-                            <th>学科名称</th>
-                            <th>论文数</th>
-                            <th>他引数</th>
+                            <th>观测站名称</th>
+                            <th>物种名称</th>
+                            <th>观测数</th>
+                            <th>地理位置</th>
                             <th>操作</th>
                             </tr>
                         </thead>
@@ -93,17 +93,17 @@
                                 <n-form-item label="年份" style="margin-top: 20px;">
                                     <n-input v-model:value="updatePaper.year" :disabled="!active" />
                                 </n-form-item>
-                                <n-form-item label="大学名称" >
+                                <n-form-item label="观测站名称" >
                                     <n-input v-model:value="updatePaper.schName" :disabled="!active" />
                                 </n-form-item>
-                                <n-form-item label="学科名称" >
+                                <n-form-item label="物种名称" >
                                     <n-input v-model:value="updatePaper.creatureName" :disabled="!active" />
                                 </n-form-item>
-                                <n-form-item path="paperNum" label="论文数">
-                                    <n-input v-model:value="updatePaper.paperNum" clearable placeholder="请输入论文数" />
+                                <n-form-item path="paperNum" label="观测数">
+                                    <n-input v-model:value="updatePaper.paperNum" clearable placeholder="请输入观测数" />
                                 </n-form-item>
-                                <n-form-item path="UsedNum" label="他引数">
-                                    <n-input v-model:value="updatePaper.usedNum" clearable placeholder="请输入他引数" />
+                                <n-form-item path="UsedNum" label="地理位置">
+                                    <n-input v-model:value="updatePaper.usedNum" clearable placeholder="请输入地理位置" />
                                 </n-form-item>
                                 <n-form-item label="" >
                                     <n-button @click="closeModal">取消</n-button>
@@ -137,7 +137,11 @@ const addPaper = reactive({
     schName: null,
     creatureName: null,
     paperNum: "",
-    usedNum: ""
+    usedNum: "",
+    langtitute: "",
+    lngDirection: "",
+    latitude: "",
+    latDirection: ""
 })
 const updatePaper = reactive({
     id: 0,
@@ -217,18 +221,18 @@ let rules = {
         { validator: validateYear, message: "请输入正确年份"},
     ],
     schName: [
-        { required: true, message: "请输入大学名称" },
+        { required: true, message: "请输入观测站名称" },
     ],
     creatureName: [
-        { required: true, message: "请输入学科名称"},
+        { required: true, message: "请输入物种名称"},
     ],
     paperNum: [
-        { required: true, message: "请输入论文数" },
+        { required: true, message: "请输入观测数" },
         { validator: onlyAllowNumber, message: "只能输入数字" },
     ],
     usedNum: [
-        { required: true, message: "请输入他引数" },
-        { validator: onlyAllowNumber, message: "只能输入数字" },
+        { required: true, message: "请输入地理位置" },
+        // { validator: onlyAllowNumber, message: "只能输入数字" },
     ],
 }
 
@@ -249,7 +253,7 @@ const create = async() => {
         schName: addPaper.schName,
         creatureName: addPaper.creatureName,
         paperNum: Number(addPaper.paperNum),
-        usedNum: Number(addPaper.usedNum)
+        usedNum: addPaper.usedNum
     })
     console.log(res)
     if (res.data.code == 200) {
@@ -274,7 +278,7 @@ const toUpdate = async(paper) => {
 const update = async() => {
     let res = await axios.put("/paper/"+ updatePaper.id, {
         paperNum: Number(updatePaper.paperNum),
-        usedNum: Number(updatePaper.usedNum)
+        usedNum: updatePaper.usedNum
     })
     console.log(res)
     if (res.data.code == 200) {
@@ -310,7 +314,7 @@ const closeModal = () => {
 }
 
 const refresh = () => {
-    addPaper.year = 2022
+    addPaper.year = 2024
     addPaper.creatureName = null
     addPaper.schName = null
     addPaper.paperNum = ""

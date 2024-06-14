@@ -1,18 +1,18 @@
 <template>
     <div>
         <n-tabs type="line" animated>
-            <n-tab-pane name="add" tab="大学信息添加">
+            <n-tab-pane name="add" tab="观测站信息添加">
                 <n-form ref="formRef" :rules="rules" :model="addSchool" style="margin-top:10px;">
-                    <n-form-item path="id" label="大学编号">
-                        <n-input v-model:value="addSchool.id" placeholder="请输入大学编号" clearable style="width: 500px;" />
+                    <n-form-item path="id" label="观测站编号">
+                        <n-input v-model:value="addSchool.id" placeholder="请输入观测站编号" clearable style="width: 500px;" />
                     </n-form-item>
-                    <n-form-item path="schName" label="大学名称">
-                        <n-input v-model:value="addSchool.schName" placeholder="请输入大学名称" clearable style="width: 500px;" />
+                    <n-form-item path="schName" label="观测站名称">
+                        <n-input v-model:value="addSchool.schName" placeholder="请输入观测站名称" clearable style="width: 500px;" />
                     </n-form-item>
-                    <n-form-item label="学校类别">
+                    <n-form-item label="观测站类别">
                         <n-select v-model:value="addSchool.schType" :options="options" style="width: 500px;" />
                     </n-form-item>
-                    <n-form-item label="办学性质">
+                    <n-form-item label="观测站性质">
                         <n-radio-group v-model:value="addSchool.schManage" name="radiogroup">
                             <n-space>
                                 <n-radio v-for="m in manage" :key="m.value" :value="m.value">
@@ -33,11 +33,11 @@
                     </n-form-item>
                 </n-form>               
             </n-tab-pane>
-            <n-tab-pane name="maintain" tab="大学信息维护">
+            <n-tab-pane name="maintain" tab="观测站信息维护">
                 <div style="display: flex; margin-top: 10px;">
-                    <n-input v-model:value="pageInfo.schName" placeholder="请输入大学名称关键字" clearable />
-                    <n-select v-model:value="pageInfo.schType" :options="options" style="width: 300px; margin-left: 20px;" placeholder="请选择学校类别" filterable />
-                    <n-select v-model:value="pageInfo.schManage" :options="manage" style="width: 300px; margin-left: 20px;" placeholder="请选择办学性质" filterable />
+                    <n-input v-model:value="pageInfo.schName" placeholder="请输入观测站名称关键字" clearable />
+                    <n-select v-model:value="pageInfo.schType" :options="options" style="width: 300px; margin-left: 20px;" placeholder="请选择观测站类别" filterable />
+                    <n-select v-model:value="pageInfo.schManage" :options="manage" style="width: 300px; margin-left: 20px;" placeholder="请选择观测站性质" filterable />
                     <n-button @click="search" type="success" style="margin-left: 20px;">
                         <template #icon><n-icon><SearchOutline /></n-icon></template>
                         查询&#8194;
@@ -47,10 +47,10 @@
                         <n-table :bordered="true" :single-line="false" style="margin-top:20px;">
                             <thead>
                                 <tr>
-                                <th>大学编号</th>
-                                <th>大学名称</th>
-                                <th>大学类别</th>
-                                <th>办学性质</th>
+                                <th>观测站编号</th>
+                                <th>观测站名称</th>
+                                <th>观测站类别</th>
+                                <th>观测站性质</th>
                                 <th>操作</th>
                                 </tr>
                             </thead>
@@ -89,13 +89,13 @@
                                 <div>修改</div>
                             </template>
                             <n-form ref="formRef" :rules="rules" :model="updateSchool">
-                                <n-form-item label="大学编号" style="margin-top: 20px;">
+                                <n-form-item label="观测站编号" style="margin-top: 20px;">
                                     <n-input v-model:value="updateSchool.id" :disabled="!active" />
                                 </n-form-item>
-                                <n-form-item path="schName" label="大学名称">
-                                    <n-input v-model:value="updateSchool.schName" placeholder="请输入大学名称" clearable />
+                                <n-form-item path="schName" label="观测站名称">
+                                    <n-input v-model:value="updateSchool.schName" placeholder="请输入观测站名称" clearable />
                                 </n-form-item>
-                                <n-form-item label="办学性质">
+                                <n-form-item label="观测站性质">
                                     <n-radio-group v-model:value="updateSchool.schManage" name="radiogroup">
                                         <n-space>
                                             <n-radio v-for="m in manage" :key="m.value" :value="m.value">
@@ -104,7 +104,7 @@
                                         </n-space>
                                     </n-radio-group>
                                 </n-form-item>
-                                <n-form-item label="学校类别">
+                                <n-form-item label="观测站类别">
                                     <n-select v-model:value="updateSchool.schType" :options="options" />
                                 </n-form-item>
                                 <n-form-item label="" >
@@ -137,8 +137,8 @@ const showUpdateModel = ref(false)
 const addSchool = reactive({
     id : "",
     schName: "",
-    schType: "985/211",
-    schManage: "公办大学"
+    schType: "卫星观测站",
+    schManage: "科研机构"
 })
 const updateSchool = reactive({
     id : "",
@@ -180,27 +180,26 @@ function onlyAllowNumber(rule, value) {
 
 let rules = {
     id: [
-        { required: true, message: "请输入大学编号" },
+        { required: true, message: "请输入观测站编号" },
         { validator: onlyAllowNumber, message: "只能输入数字" },
     ],
     schName: [
-        { required: true, message: "请输入大学名称" },
-        { max: 20, message: "大学名称长度在小于 20 个字符" },    
+        { required: true, message: "请输入观测站名称" },
+        { max: 20, message: "观测站名称长度在小于 20 个字符" },    
     ]
 }
 
 const manage = ref([
-    {value: "公办大学", label:"公办大学"},
-    {value: "民办大学", label:"民办大学"},
-    {value: "独立院校", label:"独立院校"},
+    {value: "科研机构", label:"科研机构"},
+    {value: "商业运营", label:"商业运营"},
+    {value: "公共观测", label:"公共观测"},
 ])
 
 const options = ref([
-    {value:"985/211", label: "985/211"},
-    {value:"211", label: "211"},
-    {value:"中央部署本科院校", label: "中央部署本科院校"},
-    {value:"省属本科院校", label: "省属本科院校"},
-    {value:"高职（高专）院校", label: "高职（高专）院校"},
+    {value:"卫星观测站", label: "卫星观测站"},
+    {value:"船载观测站", label: "船载观测站"},
+    {value:"潜水器观测站", label: "潜水器观测站"},
+    {value:"浮标观测站", label: "浮标观测站"},
 ]) 
 
 const toCreate = async() => {
@@ -291,8 +290,8 @@ const closeModal = () => {
 const refresh = () => {
     addSchool.id = ""
     addSchool.schName = ""
-    addSchool.schType = "985/211"
-    addSchool.schManage = "公办大学"
+    addSchool.schType = "卫星观测站"
+    addSchool.schManage = "科研机构"
 }
 
 const search = () => {

@@ -1,12 +1,12 @@
 <template>
     <div>
         <n-tabs type="line" animated>
-            <n-tab-pane name="add" tab="学科信息添加">
+            <n-tab-pane name="add" tab="物种信息添加">
                 <n-form ref="formRef" :rules="rules" :model="addSubject" style="margin-top:10px;">
-                    <n-form-item path="creatureName" label="学科名称">
-                        <n-input v-model:value="addSubject.creatureName" placeholder="请输入学科名称" clearable style="width: 500px;" />
+                    <n-form-item path="creatureName" label="物种名称">
+                        <n-input v-model:value="addSubject.creatureName" placeholder="请输入物种名称" clearable style="width: 500px;" />
                     </n-form-item>
-                    <n-form-item label="学科类别">
+                    <n-form-item label="物种类别">
                         <n-select v-model:value="addSubject.subType" :options="options" style="width: 500px;" />
                     </n-form-item>
                     <n-form-item label="">
@@ -21,10 +21,10 @@
                     </n-form-item>
                 </n-form>               
             </n-tab-pane>
-            <n-tab-pane name="maintain" tab="学科信息维护">
+            <n-tab-pane name="maintain" tab="物种信息维护">
                 <div style="display: flex; margin-top: 10px;">                  
-                    <n-input v-model:value="pageInfo.creatureName" placeholder="请输入学科名称关键字" clearable />
-                    <n-select v-model:value="pageInfo.subType" :options="options" style="width: 300px; margin-left: 20px;" placeholder="请选择学科类别" filterable />
+                    <n-input v-model:value="pageInfo.creatureName" placeholder="请输入物种名称关键字" clearable />
+                    <n-select v-model:value="pageInfo.subType" :options="options" style="width: 300px; margin-left: 20px;" placeholder="请选择物种类别" filterable />
                     <n-button @click="search" type="success" style="margin-left: 20px;">
                         <template #icon><n-icon><SearchOutline /></n-icon></template>
                         查询&#8194;
@@ -34,9 +34,9 @@
                         <n-table :bordered="true" :single-line="false" style="margin-top:20px;">
                             <thead>
                                 <tr>
-                                <th>学科编号</th>
-                                <th>学科名称</th>
-                                <th>学科类别</th>
+                                <th>物种编号</th>
+                                <th>物种名称</th>
+                                <th>物种类别</th>
                                 <th>操作</th>
                                 </tr>
                             </thead>
@@ -74,13 +74,13 @@
                                 <div>修改</div>
                             </template>
                             <n-form ref="formRef" :rules="rules" :model="updateSubject">
-                                <n-form-item label="学科编号" style="margin-top: 20px;">
+                                <n-form-item label="物种编号" style="margin-top: 20px;">
                                     <n-input v-model:value="updateSubject.id" :disabled="!active" />
                                 </n-form-item>
-                                <n-form-item path="creatureName" label="学科名称">
+                                <n-form-item path="creatureName" label="物种名称">
                                     <n-input v-model:value="updateSubject.creatureName" placeholder="请输入大学名称" clearable />
                                 </n-form-item>
-                                <n-form-item label="学科类别">
+                                <n-form-item label="物种类别">
                                     <n-select v-model:value="updateSubject.subType" :options="options" />
                                 </n-form-item>
                                 <n-form-item label="" >
@@ -112,7 +112,7 @@ const formRef = ref(null)
 const showUpdateModel = ref(false)
 const addSubject = reactive({
     creatureName: "",
-    subType: "哲学"
+    subType: "鱼类"
 })
 const updateSubject = reactive({
     id: 0,
@@ -148,25 +148,34 @@ const loadSubject = async(pageNum = 0) => {
 
 let rules = {
     creatureName: [
-        { required: true, message: "请输入学科名称" },
-        { max: 20, message: "学科名称长度在小于 20 个字符" },    
+        { required: true, message: "请输入物种名称" },
+        { max: 20, message: "物种名称长度在小于 20 个字符" },    
     ]
 }
 
 const options = ref([
-    {value:"哲学", label: "哲学"},
-    {value:"经济学", label: "经济学"},
-    {value:"法学", label: "法学"},
-    {value:"教育学", label: "教育学"},
-    {value:"文学", label: "文学"},
-    {value:"历史学", label: "历史学"},
-    {value:"理学", label: "理学"},
-    {value:"工学", label: "工学"},
-    {value:"农学", label: "农学"},
-    {value:"医学", label: "医学"},
-    {value:"军事学", label: "军事学"},
-    {value:"管理学", label: "管理学"},
-    {value:"艺术学", label: "艺术学"},
+    {value:"鱼类", label: "鱼类"},
+    {value:"甲壳类", label: "甲壳类"},
+    {value:"软体动物", label: "软体动物"},
+    {value:"腔肠动物", label: "腔肠动物"},
+    {value:"海藻类", label: "海藻类"},
+    {value:"海绵类", label: "海绵类"},
+    {value:"珊瑚类", label: "珊瑚类"},
+    {value:"鲸类", label: "鲸类"},
+    {value:"海鸟类", label: "海鸟类"},
+    {value:"海龟类", label: "海龟类"},
+    {value:"海豚类", label: "海豚类"},
+    {value:"水母类", label: "水母类"},
+    {value:"海星类", label: "海星类"},
+    {value:"海胆类", label: "海胆类"},
+    {value:"海葵类", label: "海葵类"},
+    {value:"海马类", label: "海马类"},
+    {value:"海螺类", label: "海螺类"},
+    {value:"海参类", label: "海参类"},
+    {value:"海蛇类", label: "海蛇类"},
+    {value:"海蜘蛛类", label: "海蜘蛛类"},
+    {value:"海蜇类", label: "海蜇类"},
+    {value:"海螳螂类", label: "海螳螂类"},
 ]) 
 
 const toCreate = async() => {
@@ -252,7 +261,7 @@ const closeModal = () => {
 
 const refresh = () => {
     addSubject.creatureName = ""
-    addSubject.subType = "哲学"
+    addSubject.subType = "鱼类"
 }
 
 const search = () => {

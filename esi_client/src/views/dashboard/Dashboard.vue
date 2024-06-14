@@ -7,7 +7,7 @@
                     <n-icon size="20" color="#0e7a0d">
                         <BarChart></BarChart>
                     </n-icon>
-                    <span style="font-weight: bold; font-size: 20px;">&#8197;ESI排名管理系统</span>
+                    <span style="font-weight: bold; font-size: 20px;">&#8197;海洋生物信息数据库系统</span>
                     <div style="position: absolute; top: 0px; right: 180px; font-size: 16px;">
                         欢迎你，<span style="color: #0e7a0d;"> {{user.userName}}</span>
                     </div>
@@ -21,12 +21,12 @@
             <div class="menus">
 
                 <div v-if = "showSchRank" class="myoption">
-                    &#12288;&#12288;<n-icon size="20" color="#0e7a0d"><School></School></n-icon>&#8197;大学排名管理
+                    &#12288;&#12288;&#8197;主页
                 </div>
                 <div v-else class="option" @click="toSchRank">
-                    &#12288;&#12288;<n-icon size="20"><School></School></n-icon>&#8197;大学排名管理
+                    &#12288;&#12288;&#8197;主页
                 </div>
-                <div class="space"></div>
+                <!-- <div class="space"></div>
 
                 <div v-if = "showSubRank" class="myoption">
                     &#12288;&#12288;<n-icon size="20" color="#0e7a0d"><Library></Library></n-icon>&#8197;学科排名管理
@@ -34,29 +34,29 @@
                 <div v-else class="option" @click="toSubRank">
                     &#12288;&#12288;<n-icon size="20"><Library></Library></n-icon>&#8197;学科排名管理
                 </div>
-                <div class="space"></div>
+                <div class="space"></div> -->
 
                 <div v-if = "showSchool" class="myoption">
-                    &#12288;&#12288;<n-icon size="20" color="#0e7a0d"><Podium></Podium></n-icon>&#8197;大学信息管理
+                    &#12288;&#12288;<n-icon size="20" color="#0e7a0d"><Podium></Podium></n-icon>&#8197;观测站信息管理
                 </div>
                 <div v-else class="option" @click="toSchool">
-                    &#12288;&#12288;<n-icon size="20"><Podium></Podium></n-icon>&#8197;大学信息管理
+                    &#12288;&#12288;<n-icon size="20"><Podium></Podium></n-icon>&#8197;观测站信息管理
                 </div>
                 <div class="space"></div>
 
                 <div v-if = "showSubject" class="myoption">
-                    &#12288;&#12288;<n-icon size="20" color="#0e7a0d"><Book></Book></n-icon>&#8197;学科信息管理
+                    &#12288;&#12288;<n-icon size="20" color="#0e7a0d"><Book></Book></n-icon>&#8197;物种信息管理
                 </div>
                 <div v-else class="option" @click="toSubject">
-                    &#12288;&#12288;<n-icon size="20"><Book></Book></n-icon>&#8197;学科信息管理
+                    &#12288;&#12288;<n-icon size="20"><Book></Book></n-icon>&#8197;物种信息管理
                 </div>
                 <div class="space"></div>
 
                 <div v-if = "showPaper" class="myoption">
-                    &#12288;&#12288;<n-icon size="20" color="#0e7a0d"><Newspaper></Newspaper></n-icon>&#8197;论文数据管理
+                    &#12288;&#12288;<n-icon size="20" color="#0e7a0d"><Newspaper></Newspaper></n-icon>&#8197;观测数据管理
                 </div>
                 <div v-else class="option" @click="toPaper">
-                    &#12288;&#12288;<n-icon size="20"><Newspaper></Newspaper></n-icon>&#8197;论文数据管理
+                    &#12288;&#12288;<n-icon size="20"><Newspaper></Newspaper></n-icon>&#8197;观测数据管理
                 </div>
                 <div class="space"></div>
 
@@ -117,7 +117,7 @@ const toSchRank = () => {
     showSubject.value = false
     showPaper.value = false
     showUser.value = false
-    router.push("/dashboard/schrank")
+    router.push("/dashboard/homepage")
 }
 
 const toSubRank = () => {
@@ -137,7 +137,7 @@ const toSchool = () => {
     showSubject.value = false
     showPaper.value = false
     showUser.value = false
-    router.push("/dashboard/school")
+    router.push("/dashboard/observatory")
 }
 
 const toSubject = () => {
@@ -147,7 +147,7 @@ const toSubject = () => {
     showSubject.value = true
     showPaper.value = false
     showUser.value = false
-    router.push("/dashboard/subject")
+    router.push("/dashboard/species")
 }
 
 const toPaper = () => {
@@ -157,7 +157,7 @@ const toPaper = () => {
     showSubject.value = false
     showPaper.value = true
     showUser.value = false
-    router.push("/dashboard/paper")
+    router.push("/dashboard/data")
 }
 
 const toUser = () => {

@@ -5,7 +5,7 @@
             <n-icon size="20" color="#0e7a0d">
               <BarChart></BarChart>
             </n-icon>
-            <span style="font-weight: bold; font-size: 20px;">&#8197;ESI排名管理系统</span>
+            <span style="font-weight: bold; font-size: 20px;">&#8197;海洋生物信息数据库系统</span>
           </div>
           <n-divider />
           <n-form :rules="rules" :model="user">
